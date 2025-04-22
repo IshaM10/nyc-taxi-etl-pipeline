@@ -30,3 +30,15 @@ JOIN `data-with-darshil.uber_data_engineering_yt.pickup_location_dim` pick ON pi
 JOIN `data-with-darshil.uber_data_engineering_yt.dropoff_location_dim` drop ON drop.dropoff_location_id=f.dropoff_location_id
 JOIN `data-with-darshil.uber_data_engineering_yt.payment_type_dim` pay ON pay.payment_type_id=f.payment_type_id)
 ;
+
+-- find top 10 pickup locations based on number of trips
+select pickup_location_name, count(1) as total_trips 
+from `xenon-timer-455106-t9.yellow_taxi_data.tbl_analytics` 
+group by pickup_location_name
+order by 2 desc;
+
+-- avg fair amount by hour of the day
+select  EXTRACT(HOUR FROM PARSE_DATETIME('%Y-%m-%dT%H:%M:%S', tpep_pickup_datetime)) as hour_of_day, avg(fare_amount) as avg_fare_amount
+from `xenon-timer-455106-t9.yellow_taxi_data.tbl_analytics`  
+group by 1
+order by 2 asc;
